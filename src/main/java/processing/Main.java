@@ -7,11 +7,11 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-    private static String inputDir  = "src/main/java/image/";
+    private static String inputDir  = "src/main/java/faces/";
     private static String outputDir = "src/main/java/pipeline/";
     
-    private static final String sourceImage = "Lenna1.png";
-    private static final String finalImage = "Lenna2.png"; 
+    private static String sourceImage = "10.png";
+    private static String finalImage = "10a.png"; 
     
     private static final int padding_x = 7;     // Must be odd number
     private static final int padding_y = 7;     // Must be odd number
@@ -25,10 +25,19 @@ public class Main {
 
         System.out.println("Processing Image Tranformation Pipeline");
         
+        for(int i=4; i<9; i++) {
+            sourceImage = i + ".png";
+            finalImage = i + "a.png";
+            ProcessAll();    
+        }
+        
+    }
+    /*--------------------------------------------------------------------------------------------*/
+    private static void ProcessAll() throws IOException {
         /*-------------------- Percentile -----------------------*/
         int[][] imgPrecentile = ProcessPrecentile();
         
-        Reflection ref = new Reflection();        
+        Reflection ref = new Reflection();
         int[][] imgReflection = ref.convolve(imgPrecentile, padding_x, padding_y);  
         ImageWrite(outputDir + "reflection.png", imgReflection);
            
@@ -62,20 +71,19 @@ public class Main {
         
         /*--------------------- Statistics ----------------------*/
         Statistics stat1 = new Statistics(outputDir + "SobelMagnitute.png");
-        System.out.format("\n1.) src/image/SobelMagnitute.png"  
-                  + "\n\tSobel Magnitide - Image Output Mean = %.3f\n\n"
-                  , stat1.getMean());        
-
-        Statistics stat2 = new Statistics(outputDir + "SobelDirection.png");
-        System.out.format("\n2.) src/image/SobelDirection.png"  
-                  + "\n\tSobel Direction - Image Output Mean = %.3f\n\n"
-                  , stat2.getMean());        
-
-        Statistics stat3 = new Statistics(inputDir + finalImage);
-        System.out.format("\n3.) " + inputDir + finalImage  
-                  + "\n\tSobel with Otsu Treshold = " + otsu.treshold 
-                  + " - Image Output Mean = %.3f\n", stat3.getMean());        
+        System.out.format("\n1.) src/image/SobelMagnitute.png"
+                + "\n\tSobel Magnitide - Image Output Mean = %.3f\n\n"
+                , stat1.getMean());
         
+        Statistics stat2 = new Statistics(outputDir + "SobelDirection.png");
+        System.out.format("\n2.) src/image/SobelDirection.png"
+                + "\n\tSobel Direction - Image Output Mean = %.3f\n\n"
+                , stat2.getMean());        
+        
+        Statistics stat3 = new Statistics(inputDir + finalImage);
+        System.out.format("\n3.) " + inputDir + finalImage
+                + "\n\tSobel with Otsu Treshold = " + otsu.treshold
+                + " - Image Output Mean = %.3f\n", stat3.getMean());
     }
     /*--------------------------------------------------------------------------------------------*/    
     private static int[][] ProcessPrecentile() throws IOException {

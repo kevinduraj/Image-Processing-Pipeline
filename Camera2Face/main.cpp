@@ -138,7 +138,8 @@ void FindFace2Frame(Mat frame) {
         //--- create a filename
         filename = "";
         stringstream ssfn;
-        ssfn << "images/" << filenumber << ".png";
+        //ssfn << "images/" << filenumber << ".png";
+        ssfn << "../src/main/java/faces/" << filenumber << ".png";
         filename = ssfn.str();
         filenumber++;
 
